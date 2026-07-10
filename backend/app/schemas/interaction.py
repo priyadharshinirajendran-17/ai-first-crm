@@ -1,22 +1,33 @@
-from datetime import date, time
-from typing import Optional
+from datetime import datetime
+from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class InteractionBase(BaseModel):
     hcp_name: str
-    interaction_type: Optional[str] = None
-    interaction_date: Optional[date] = None
-    interaction_time: Optional[time] = None
-    attendees: Optional[str] = None
-    topics_discussed: Optional[str] = None
-    materials_shared: Optional[str] = None
-    samples_distributed: Optional[str] = None
-    sentiment: Optional[str] = None
-    outcomes: Optional[str] = None
-    follow_up_actions: Optional[str] = None
+
+    interaction_type: str
+
+    interaction_datetime: datetime
+
+    attendees: List[str] = Field(default_factory=list)
+
+    topics_discussed: Optional[str] = ""
+
+    materials_shared: List[str] = Field(default_factory=list)
+
+    samples_distributed: List[str] = Field(default_factory=list)
+
+    sentiment: str = "neutral"
+
+    outcomes: Optional[str] = ""
+
+    follow_up_actions: List[str] = Field(default_factory=list)
+
     ai_summary: Optional[str] = None
+
+    created_via: str = "form"
 
 
 class InteractionCreate(InteractionBase):
