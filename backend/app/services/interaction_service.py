@@ -1,3 +1,5 @@
+import json
+
 from sqlalchemy.orm import Session
 
 from app.database.models import Interaction
@@ -8,7 +10,20 @@ from app.schemas.interaction import (
 
 
 def create_interaction(db: Session, interaction: InteractionCreate):
-    db_interaction = Interaction(**interaction.model_dump())
+    db_interaction = Interaction(
+        hcp_name=interaction.hcp_name,
+        interaction_type=interaction.interaction_type,
+        interaction_datetime=interaction.interaction_datetime,
+        attendees=json.dumps(interaction.attendees),
+        topics_discussed=interaction.topics_discussed,
+        materials_shared=json.dumps(interaction.materials_shared),
+        samples_distributed=json.dumps(interaction.samples_distributed),
+        sentiment=interaction.sentiment,
+        outcomes=interaction.outcomes,
+        follow_up_actions=json.dumps(interaction.follow_up_actions),
+        ai_summary=interaction.ai_summary,
+        created_via=interaction.created_via,
+    )
 
     db.add(db_interaction)
     db.commit()
@@ -39,8 +54,18 @@ def update_interaction(
     if not db_interaction:
         return None
 
-    for key, value in interaction.model_dump().items():
-        setattr(db_interaction, key, value)
+    db_interaction.hcp_name = interaction.hcp_name
+    db_interaction.interaction_type = interaction.interaction_type
+    db_interaction.interaction_datetime = interaction.interaction_datetime
+    db_interaction.attendees = json.dumps(interaction.attendees)
+    db_interaction.topics_discussed = interaction.topics_discussed
+    db_interaction.materials_shared = json.dumps(interaction.materials_shared)
+    db_interaction.samples_distributed = json.dumps(interaction.samples_distributed)
+    db_interaction.sentiment = interaction.sentiment
+    db_interaction.outcomes = interaction.outcomes
+    db_interaction.follow_up_actions = json.dumps(interaction.follow_up_actions)
+    db_interaction.ai_summary = interaction.ai_summary
+    db_interaction.created_via = interaction.created_via
 
     db.commit()
     db.refresh(db_interaction)

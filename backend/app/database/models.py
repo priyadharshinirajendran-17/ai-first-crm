@@ -3,8 +3,7 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
-    Date,
-    Time,
+    DateTime,
 )
 
 from app.database.database import Base
@@ -17,11 +16,9 @@ class Interaction(Base):
 
     hcp_name = Column(String(255), nullable=False)
 
-    interaction_type = Column(String(100))
+    interaction_type = Column(String(100), nullable=False)
 
-    interaction_date = Column(Date)
-
-    interaction_time = Column(Time)
+    interaction_datetime = Column(DateTime, nullable=False)
 
     attendees = Column(Text)
 
@@ -38,3 +35,5 @@ class Interaction(Base):
     follow_up_actions = Column(Text)
 
     ai_summary = Column(Text)
+
+    created_via = Column(String(30), default="form")
