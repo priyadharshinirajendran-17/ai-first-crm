@@ -10,6 +10,8 @@ from app.schemas.interaction import (
 
 
 def create_interaction(db: Session, interaction: InteractionCreate):
+    print("========== CREATE INTERACTION ==========")
+    print(interaction.model_dump())
     db_interaction = Interaction(
         hcp_name=interaction.hcp_name,
         interaction_type=interaction.interaction_type,
@@ -26,8 +28,11 @@ def create_interaction(db: Session, interaction: InteractionCreate):
     )
 
     db.add(db_interaction)
+    print("Adding object to database...")
     db.commit()
+    print("Commit completed.")
     db.refresh(db_interaction)
+    print("Generated ID:", db_interaction.id)
 
     # Convert JSON strings back to lists for API response
     db_interaction.attendees = json.loads(db_interaction.attendees or "[]")
