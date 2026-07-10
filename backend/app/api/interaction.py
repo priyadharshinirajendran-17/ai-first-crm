@@ -78,3 +78,73 @@ def delete(interaction_id: int, db: Session = Depends(get_db)):
     return {
         "message": "Interaction deleted successfully"
     }
+
+# -----------------------------
+# Lookup APIs
+# -----------------------------
+
+@router.get("/lookup/materials")
+def get_materials(q: str = ""):
+    materials = [
+        "Product Brochure",
+        "Clinical Study",
+        "Patient Guide",
+        "Drug Leaflet",
+        "Treatment Protocol",
+        "Safety Information",
+    ]
+
+    if q:
+        materials = [
+            m for m in materials
+            if q.lower() in m.lower()
+        ]
+
+    return [
+        {"id": i + 1, "name": m}
+        for i, m in enumerate(materials)
+    ]
+
+
+@router.get("/lookup/samples")
+def get_samples(q: str = ""):
+    samples = [
+        "Paracetamol 500mg",
+        "Vitamin D",
+        "Amoxicillin",
+        "Insulin Pen",
+        "Pain Relief Gel",
+    ]
+
+    if q:
+        samples = [
+            s for s in samples
+            if q.lower() in s.lower()
+        ]
+
+    return [
+        {"id": i + 1, "name": s}
+        for i, s in enumerate(samples)
+    ]
+
+
+@router.get("/hcps")
+def get_hcps(q: str = ""):
+    hcps = [
+        "Dr. John Smith",
+        "Dr. Priya Kumar",
+        "Dr. Ravi Kumar",
+        "Dr. Meena Joseph",
+        "Dr. Sarah Wilson",
+    ]
+
+    if q:
+        hcps = [
+            h for h in hcps
+            if q.lower() in h.lower()
+        ]
+
+    return [
+        {"id": i + 1, "name": h}
+        for i, h in enumerate(hcps)
+    ]

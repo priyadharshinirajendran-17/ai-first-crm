@@ -12,7 +12,7 @@ import {
   searchMaterials,
   searchSamples,
   clearSaveStatus,
-} from "../../../store/interactionSlice";
+} from "../../../redux/slices/interactionSlice";
 
 import {
   Autocomplete,
