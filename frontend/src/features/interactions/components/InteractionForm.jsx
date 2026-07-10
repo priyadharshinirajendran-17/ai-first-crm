@@ -45,25 +45,30 @@ function InteractionForm() {
     });
   };
 
-    const handleSave = async () => {
-    try {
-      const payload = {
-        ...formData,
-        date: date.format("YYYY-MM-DD"),
-        time: time.format("HH:mm:ss"),
-      };
+const handleSave = async () => {
+  try {
+    const payload = {
+      ...formData,
 
-      const res = await api.post("/interaction/", payload);
+      interaction_date: date.format("YYYY-MM-DD"),
+      interaction_time: time.format("HH:mm:ss"),
+    };
 
-      alert("Interaction saved successfully!");
+    const response = await api.post(
+      "/interaction/",
+      payload
+    );
 
-      console.log(res.data);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to save interaction.");
-    }
-  };
-  
+    console.log(response.data);
+
+    alert("Interaction Saved Successfully!");
+
+  } catch (error) {
+    console.error(error);
+
+    alert("Unable to save interaction");
+  }
+};
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
     <Box>
