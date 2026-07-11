@@ -204,6 +204,14 @@ function InteractionForm() {
   };
 
   const handleSave = async () => {
+    if (!formData.hcp_name.trim()) {
+  setSnackbar({
+    open: true,
+    message: "Please select or enter an HCP Name.",
+    severity: "error",
+  });
+  return;
+}
     const payload = {
       hcp_name: formData.hcp_name || undefined,
       interaction_type: formData.interaction_type,
@@ -225,12 +233,20 @@ function InteractionForm() {
     if (saveInteraction.fulfilled.match(result)) {
       setSnackbar({ open: true, message: "Interaction saved successfully!", severity: "success" });
     } else {
-      setSnackbar({
-        open: true,
-        message: result.payload || "Unable to save interaction",
-        severity: "error",
-      });
-    }
+  const errorMessage =
+    typeof result.payload === "string"
+      ? result.payload
+      : Array.isArray(result.payload)
+      ? result.payload.map((item) => item.msg).join(", ")
+      : "Unable to save interaction";
+
+  setSnackbar({
+    open: true,
+    message: errorMessage,
+    severity: "error",
+  });
+}
+
   };
 
   const hcpNameOptions = useMemo(() => hcpOptions.map((h) => h.name), [hcpOptions]);

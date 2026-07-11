@@ -145,9 +145,6 @@ const interactionSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-
-      /* ---------------- Fetch ---------------- */
-
       .addCase(fetchInteractions.pending, (state) => {
         state.loading = true;
       })
@@ -162,8 +159,6 @@ const interactionSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* ---------------- Save ---------------- */
-
       .addCase(saveInteraction.pending, (state) => {
         state.saveLoading = true;
         state.saveSuccess = false;
@@ -172,7 +167,6 @@ const interactionSlice = createSlice({
       .addCase(saveInteraction.fulfilled, (state, action) => {
         state.saveLoading = false;
         state.saveSuccess = true;
-
         state.interactions.unshift(action.payload);
       })
 
@@ -180,8 +174,6 @@ const interactionSlice = createSlice({
         state.saveLoading = false;
         state.error = action.payload;
       })
-
-      /* ---------------- Update ---------------- */
 
       .addCase(updateInteraction.fulfilled, (state, action) => {
         const index = state.interactions.findIndex(
@@ -193,15 +185,11 @@ const interactionSlice = createSlice({
         }
       })
 
-      /* ---------------- Delete ---------------- */
-
       .addCase(deleteInteraction.fulfilled, (state, action) => {
         state.interactions = state.interactions.filter(
           (item) => item.id !== action.payload
         );
       })
-
-      /* ---------------- Lookups ---------------- */
 
       .addCase(searchHcps.fulfilled, (state, action) => {
         state.hcpOptions = action.payload;
