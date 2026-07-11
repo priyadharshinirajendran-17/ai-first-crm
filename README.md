@@ -69,6 +69,7 @@ ai-first-crm/
 │   └── requirements.txt
 │
 └── README.md
+```
 
 ## Prerequisites
 
