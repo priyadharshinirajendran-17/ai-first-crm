@@ -30,6 +30,26 @@ def create(interaction: InteractionCreate, db: Session = Depends(get_db)):
 def get_all(db: Session = Depends(get_db)):
     return get_interactions(db)
 
+@router.get("/hcps")
+def get_hcps(q: str = ""):
+    hcps = [
+        "Dr. John Smith",
+        "Dr. Priya Kumar",
+        "Dr. Ravi Kumar",
+        "Dr. Meena Joseph",
+        "Dr. Sarah Wilson",
+    ]
+
+    if q:
+        hcps = [
+            h for h in hcps
+            if q.lower() in h.lower()
+        ]
+
+    return [
+        {"id": i + 1, "name": h}
+        for i, h in enumerate(hcps)
+    ]
 
 @router.get("/{interaction_id}", response_model=InteractionResponse)
 def get_one(interaction_id: int, db: Session = Depends(get_db)):
@@ -128,23 +148,3 @@ def get_samples(q: str = ""):
     ]
 
 
-@router.get("/hcps")
-def get_hcps(q: str = ""):
-    hcps = [
-        "Dr. John Smith",
-        "Dr. Priya Kumar",
-        "Dr. Ravi Kumar",
-        "Dr. Meena Joseph",
-        "Dr. Sarah Wilson",
-    ]
-
-    if q:
-        hcps = [
-            h for h in hcps
-            if q.lower() in h.lower()
-        ]
-
-    return [
-        {"id": i + 1, "name": h}
-        for i, h in enumerate(hcps)
-    ]
