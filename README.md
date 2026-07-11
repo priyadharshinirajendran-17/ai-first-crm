@@ -1,139 +1,91 @@
-# AI-First CRM – HCP Interaction Management
+# AI-First CRM - HCP Interaction Management
 
-AI-First CRM is a Healthcare Professional (HCP) interaction management application designed for life-sciences field representatives.
-
-The application allows users to log and manage HCP interactions through a structured form and a conversational AI assistant.
+AI-first CRM for life-sciences field representatives to log and manage Healthcare Professional (HCP) interactions through a structured form or conversational AI.
 
 ## Features
 
 - Structured HCP interaction form
 - Conversational AI assistant
-- Log HCP interactions using natural language
-- Edit existing interactions
+- Log and edit interactions
 - Search HCP interaction history
-- Generate AI follow-up suggestions
-- Summarize unstructured interaction notes
-- Track materials and samples
-- Record sentiment and outcomes
-- PostgreSQL database integration
+- AI follow-up suggestions
+- Interaction summarization
+- PostgreSQL persistence
 
 ## Tech Stack
 
-Frontend: React.js, Vite, Redux Toolkit, Material UI, Axios and Google Inter Font.
+**Frontend:** React, Vite, Redux Toolkit, Material UI, Axios, Google Inter Font.
 
-Backend: Python, FastAPI, SQLAlchemy, PostgreSQL, LangGraph, LangChain and Groq LLM.
+**Backend:** Python, FastAPI, SQLAlchemy, PostgreSQL, LangGraph, LangChain, Groq LLM.
 
-## LangGraph AI Agent
+## LangGraph Agent Tools
 
-The LangGraph agent manages conversational HCP interaction workflows.
+The LangGraph agent interprets natural-language CRM requests and routes them to five sales tools:
 
-It interprets natural-language requests and routes the request to the appropriate CRM tool.
+1. **Log Interaction** - extracts details and stores the interaction.
+2. **Edit Interaction** - modifies an existing interaction.
+3. **Search HCP** - retrieves HCP interaction history.
+4. **Suggest Follow-up** - recommends practical sales follow-up actions.
+5. **Summarize Interaction** - converts field notes into a professional CRM summary.
 
-The five LangGraph tools are:
-
-1. Log Interaction - Extracts interaction details and stores them in the CRM database.
-2. Edit Interaction - Modifies an existing logged interaction.
-3. Search HCP - Searches and retrieves HCP interaction history.
-4. Suggest Follow-up - Recommends practical sales follow-up actions.
-5. Summarize Interaction - Converts unstructured notes into a professional CRM summary.
-
-## LLM Integration
-
-The AI assistant uses Groq through LangChain with the llama-3.3-70b-versatile model.
-
-LangGraph manages agent workflow, tool selection and tool execution.
+The AI assistant uses Groq with `llama-3.3-70b-versatile`. LangGraph manages tool selection and execution.
 
 ## Project Structure
 
-The project contains two main applications.
-
-Frontend contains the React UI, interaction form, AI chat panel, Redux state management and API integration.
-
-Backend contains FastAPI routes, LangGraph agents and tools, SQLAlchemy database models, schemas and services.
+- `frontend/` - React UI, Redux state, form, chat panel, and API integration.
+- `backend/` - FastAPI routes, LangGraph agent/tools, database models, schemas, and services.
 
 ## Prerequisites
 
-Install Node.js and npm, Python 3, PostgreSQL and Git.
+Install Node.js and npm, Python 3, PostgreSQL, and Git. Create a Groq API key.
 
-A Groq API key is required for conversational AI functionality.
+## Run the Backend
 
-## How to Run the Backend
+1. Open a terminal and run:
 
-Open a terminal and navigate to the backend folder.
+    cd backend
+    python -m venv .venv
+    .venv\Scripts\activate
+    pip install -r requirements.txt
 
-Command: cd backend
+2. Create `backend/.env` with:
 
-Create a virtual environment.
+    APP_NAME=AI First CRM API
+    API_VERSION=1.0.0
+    HOST=127.0.0.1
+    PORT=8000
+    FRONTEND_URL=http://localhost:5173
+    DATABASE_URL=your_postgresql_database_url
+    GROQ_API_KEY=your_groq_api_key
 
-Command: python -m venv .venv
+3. Start FastAPI:
 
-Activate the virtual environment on Windows.
+    python -m uvicorn app.main:app --reload
 
-Command: .venv\Scripts\activate
+Backend: `http://127.0.0.1:8000`  
+Swagger: `http://127.0.0.1:8000/docs`
 
-Install backend dependencies.
+## Run the Frontend
 
-Command: pip install -r requirements.txt
+Open a new terminal and run:
 
-Create a .env file inside the backend folder.
+    cd frontend
+    npm install
+    npm run dev
 
-Add the following environment variables:
-
-APP_NAME=AI First CRM API
-
-API_VERSION=1.0.0
-
-HOST=127.0.0.1
-
-PORT=8000
-
-FRONTEND_URL=http://localhost:5173
-
-DATABASE_URL=your_postgresql_database_url
-
-GROQ_API_KEY=your_groq_api_key
-
-Start the FastAPI backend.
-
-Command: python -m uvicorn app.main:app --reload
-
-The backend runs locally on http://127.0.0.1:8000
-
-Swagger API documentation is available at http://127.0.0.1:8000/docs
-
-## How to Run the Frontend
-
-Open a new terminal and navigate to the frontend folder.
-
-Command: cd frontend
-
-Install frontend dependencies.
-
-Command: npm install
-
-Start the Vite development server.
-
-Command: npm run dev
-
-The frontend runs locally on http://localhost:5173
+Frontend: `http://localhost:5173`
 
 ## Example AI Commands
 
-Log an interaction with Dr. Test Kumar. Meeting. Discussed oncology treatment options. Positive sentiment. Requested clinical materials.
-
-Find interactions for Dr. Test Kumar.
-
-Edit interaction 5. Change sentiment to neutral and change the outcome to follow-up meeting required.
-
-Suggest follow-up actions for Dr. Test Kumar.
-
-Summarize the interaction with Dr. Test Kumar.
+- Log an interaction with Dr. Test Kumar. Meeting. Discussed oncology treatment options. Positive sentiment. Requested clinical materials.
+- Find interactions for Dr. Test Kumar.
+- Edit interaction 5. Change sentiment to neutral and the outcome to follow-up meeting required.
+- Suggest folow-up actions for Dr. Test Kumar.
+- Summarize the interaction with Dr. Test Kumar.
 
 ## Security
 
-Sensitive values such as the PostgreSQL database URL and Groq API key are stored in a .env file.
-
-The .env file is excluded from Git version control. API keys and database credentials must not be committed to the repository.
+Store `DATABASE_URL` and `GROQ_API_KEY` in `backend/.env`. The `.env` file is excluded from Git and credentials must not be committed.
 
 ## Author
 
