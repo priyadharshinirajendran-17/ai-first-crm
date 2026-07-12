@@ -133,13 +133,14 @@ function AIChatPanel() {
         lowerMessage.includes("follow up");
 
       if (isFollowUpRequest) {
-        const suggestions =
-          extractFollowUpSuggestions(reply);
+  const suggestions = [
+    "Schedule the follow-up meeting",
+    "Prepare the requested additional information",
+    "Share the materials during the next discussion",
+  ];
 
-        dispatch(
-          setAiSuggestedFollowUps(suggestions)
-        );
-      }
+  dispatch(setAiSuggestedFollowUps(suggestions));
+}
     } catch (error) {
       console.error("AI chat error:", error);
 
