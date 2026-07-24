@@ -196,76 +196,112 @@ def search_hcp(hcp_name: str) -> str:
 
 
 # =========================================================
-# TOOL 4 - SUGGEST FOLLOW-UP
+# TOOL 4 - AI SUGGEST FOLLOW-UP
 # =========================================================
 
 @tool
 def suggest_follow_up(
     hcp_name: str,
-    interaction_context: str,
+    interaction_context: str = "",
     sentiment: str = "neutral",
 ) -> str:
     """
-    Suggest practical follow-up actions from HCP interaction context.
-    Use when the user asks for follow-up recommendations.
+    Generate AI-based follow-up recommendations using the latest
+    HCP interaction data and CRM context.
     """
 
-    sentiment_lower = sentiment.lower()
+    db = SessionLocal()
 
-    if sentiment_lower == "positive":
-        actions = [
-            "Schedule a follow-up discussion.",
-            "Share relevant clinical or product materials.",
-            "Confirm the HCP's areas of interest.",
-            "Record the next engagement date in the CRM.",
-        ]
+    try:
+        latest_interaction = (
+            db.query(Interaction)
+            .filter(Interaction.hcp_name.ilike(f"%{hcp_name}%"))
+            .order_by(Interaction.interaction_datetime.desc())
+            .first()
+        )
 
-    elif sentiment_lower == "negative":
-        actions = [
-            "Review the HCP's concerns.",
-            "Prepare evidence-based clarification materials.",
-            "Coordinate with the medical or product team if required.",
-            "Plan a low-pressure follow-up discussion.",
-        ]
+        database_context = ""
 
-    else:
-        actions = [
-            "Send a concise follow-up message.",
-            "Share relevant information discussed during the interaction.",
-            "Confirm whether additional information is required.",
-            "Plan the next CRM engagement.",
-        ]
+        if latest_interaction:
+            database_context = f"""
+Latest CRM interaction:
+HCP Name: {latest_interaction.hcp_name}
+Interaction Type: {latest_interaction.interaction_type}
+Topics Discussed: {latest_interaction.topics_discussed}
+Sentiment: {latest_interaction.sentiment}
+Outcomes: {latest_interaction.outcomes}
+Existing Follow-up Actions: {latest_interaction.follow_up_actions}
+"""
 
-    return json.dumps(
-        {
-            "hcp_name": hcp_name,
-            "context": interaction_context,
-            "sentiment": sentiment,
-            "suggested_follow_up_actions": actions,
-        },
-        indent=2,
-    )
+        prompt = f"""
+You are an AI assistant supporting life-sciences field sales representatives.
+
+Analyze the HCP interaction and suggest exactly four practical,
+professional follow-up actions.
+
+HCP: {hcp_name}
+User-provided context: {interaction_context}
+Provided sentiment: {sentiment}
+
+{database_context}
+
+Rules:
+- Base recommendations only on the available interaction information.
+- Do not invent medical claims or HCP details.
+- Make every recommendation specific and actionable.
+- Keep each action concise.
+- Return only a numbered list of four follow-up actions.
+"""
+
+        response = llm.invoke(prompt)
+
+        return response.content
+
+    except Exception as exc:
+        return f"Unable to generate follow-up suggestions: {str(exc)}"
+
+    finally:
+        db.close()
 
 
 # =========================================================
-# TOOL 5 - SUMMARIZE INTERACTION
+# TOOL 5 - AI SUMMARIZE INTERACTION
 # =========================================================
 
 @tool
 def summarize_interaction(interaction_notes: str) -> str:
     """
-    Prepare interaction notes for a concise professional CRM summary.
-    Use when the user asks to summarize interaction notes.
+    Generate a concise AI-powered professional CRM summary
+    from HCP interaction notes.
     """
 
     if not interaction_notes.strip():
         return "No interaction notes were provided."
 
-    return (
-        "Create a concise professional CRM summary from these notes. "
-        "Preserve only facts explicitly stated by the representative. "
-        f"Interaction notes: {interaction_notes}"
-    )
+    try:
+        prompt = f"""
+You are an AI assistant for a life-sciences CRM system.
+
+Create a concise professional CRM summary from the interaction notes below.
+
+Interaction Notes:
+{interaction_notes}
+
+Rules:
+- Preserve only facts explicitly stated in the notes.
+- Do not invent HCP information, medical claims, outcomes, or commitments.
+- Clearly capture the main discussion, HCP sentiment, and outcome when available.
+- Use a professional CRM tone.
+- Keep the summary concise.
+- Return only the final CRM summary.
+"""
+
+        response = llm.invoke(prompt)
+
+        return response.content
+
+    except Exception as exc:
+        return f"Unable to summarize interaction: {str(exc)}"
 
 
 # =========================================================
