@@ -112,38 +112,6 @@ AI-First-CRM
 
 ---
 
-# 📸 Screenshots
-
-## Dashboard
-
-> *(Add screenshot)*
-
----
-
-## HCP Interaction Form
-
-> *(Add screenshot)*
-
----
-
-## AI Chat Assistant
-
-> *(Add screenshot)*
-
----
-
-## AI Generated Summary
-
-> *(Add screenshot)*
-
----
-
-## Swagger API
-
-> *(Add screenshot)*
-
----
-
 # 🚀 Installation
 
 ## Clone Repository
