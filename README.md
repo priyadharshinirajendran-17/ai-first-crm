@@ -1,130 +1,257 @@
-# AI-First CRM – HCP Interaction Management
+# 🏥 AI-First CRM
 
-AI-First CRM is a Healthcare Professional interaction management application designed for life-sciences field representatives.
+An AI-powered Healthcare Customer Relationship Management (CRM) application that enables healthcare representatives to manage Healthcare Professional (HCP) interactions through both structured forms and a conversational AI assistant.
 
-The application allows representatives to log and manage HCP interactions using either a structured form or a conversational AI assistant.
+Built using **React, FastAPI, LangGraph, Groq LLM, and PostgreSQL**, the application demonstrates how AI agents can automate CRM workflows by understanding natural language and executing real application actions.
 
-## Features
+---
 
-- Structured HCP interaction logging form
-- Conversational AI assistant
-- Log interactions using natural language
-- Edit existing interaction records
-- Search HCP interaction history
-- Generate AI follow-up suggestions
-- Summarize unstructured interaction notes
-- Track materials and samples
-- Record sentiment and outcomes
-- PostgreSQL database integration
+## ✨ Features
 
-## Tech Stack
+- 🤖 AI-powered conversational CRM assistant
+- 📝 Log HCP interactions using structured forms
+- 🔍 Search interactions using natural language
+- ✏️ Edit existing interactions through AI
+- 📋 AI-generated interaction summaries
+- 📅 AI-powered follow-up recommendations
+- 💾 PostgreSQL database integration
+- ⚡ FastAPI backend with REST APIs
+- 🎯 Redux Toolkit for state management
+- 📱 Responsive React user interface
 
-### Frontend
+---
 
-React.js, Vite, Redux Toolkit, Material UI, Axios and Google Inter Font.
+## 🛠 Tech Stack
 
-### Backend
+| Layer | Technology |
+|--------|------------|
+| Frontend | React.js, Redux Toolkit, Material UI |
+| Backend | FastAPI, Python |
+| AI Framework | LangGraph |
+| LLM | Groq Llama 3.3 70B |
+| Database | PostgreSQL (Neon) |
+| ORM | SQLAlchemy |
+| API Testing | Swagger UI |
+| Deployment | Vercel (Frontend), Render (Backend) |
 
-Python, FastAPI, SQLAlchemy, PostgreSQL, LangGraph, LangChain and Groq LLM.
+---
 
-## LangGraph AI Agent
+# 🏗 System Architecture
 
-The LangGraph agent interprets conversational CRM requests and routes them to the appropriate sales tool.
+```text
+                React Frontend
+                       │
+                Redux Toolkit
+                       │
+              REST API Requests
+                       │
+                 FastAPI Backend
+                       │
+                 LangGraph Agent
+                       │
+      ┌─────────────────────────────────┐
+      │                                 │
+ Log Interaction Tool           Edit Interaction Tool
+ Search Interaction Tool        Follow-up Tool
+ Summarization Tool
+      │
+      ▼
+      Groq LLM
+      │
+      ▼
+ PostgreSQL Database
+```
 
-The five LangGraph tools are:
+---
 
-1. Log Interaction – Extracts interaction details and stores them in the CRM database.
-2. Edit Interaction – Modifies an existing logged interaction.
-3. Search HCP – Searches and retrieves HCP interaction history.
-4. Suggest Follow-up – Recommends practical sales follow-up actions.
-5. Summarize Interaction – Converts unstructured notes into a professional CRM summary.
+# 🤖 AI Agent Workflow
 
-## LLM Integration
+The application uses **LangGraph** to orchestrate an AI agent capable of understanding user requests and selecting the appropriate CRM tool.
 
-The AI assistant uses Groq through LangChain with the llama-3.3-70b-versatile model.
+### Available AI Tools
 
-LangGraph manages tool selection, workflow and tool execution.
+- Log HCP Interaction
+- Edit Existing Interaction
+- Search HCP Interactions
+- Generate Follow-up Recommendations
+- Summarize Interaction Notes
 
-## Project Structure
+Instead of relying on keyword matching, the AI agent interprets natural language requests and determines which tool should be executed to fulfill the user's intent.
 
-The frontend folder contains the React UI, Redux state management, interaction form, AI chat panel and API integration.
+---
 
-The backend folder contains FastAPI routes, LangGraph agents and tools, SQLAlchemy database models, schemas and services.
+# 📂 Project Structure
 
-## Prerequisites
+```text
+AI-First-CRM
+│
+├── backend
+│   ├── app
+│   │   ├── agents
+│   │   ├── api
+│   │   ├── database
+│   │   ├── models
+│   │   ├── schemas
+│   │   ├── services
+│   │   └── main.py
+│   │
+│   └── requirements.txt
+│
+├── frontend
+│   ├── src
+│   │   ├── app
+│   │   ├── features
+│   │   ├── components
+│   │   ├── services
+│   │   └── pages
+│   │
+│   └── package.json
+│
+└── README.md
+```
 
-Install Node.js and npm, Python 3, PostgreSQL and Git.
+---
 
-A Groq API key is required for AI assistant functionality.
+# 📸 Screenshots
 
-## How to Run the Backend
+## Dashboard
 
-1. Navigate to the backend folder.
+> *(Add screenshot)*
 
-Command: cd backend
+---
 
-2. Create a virtual environment.
+## HCP Interaction Form
 
-Command: python -m venv .venv
+> *(Add screenshot)*
 
-3. Activate the virtual environment on Windows.
+---
 
-Command: .venv\Scripts\activate
+## AI Chat Assistant
 
-4. Install backend dependencies.
+> *(Add screenshot)*
 
-Command: pip install -r requirements.txt
+---
 
-5. Create a .env file inside the backend folder.
+## AI Generated Summary
 
-Add DATABASE_URL with your PostgreSQL database URL.
+> *(Add screenshot)*
 
-Add GROQ_API_KEY with your Groq API key.
+---
 
-Add FRONTEND_URL with your frontend local address.
+## Swagger API
 
-6. Start the FastAPI backend.
+> *(Add screenshot)*
 
-Command: python -m uvicorn app.main:app --reload
+---
 
-FastAPI Swagger documentation is available from the backend docs endpoint.
+# 🚀 Installation
 
-## How to Run the Frontend
+## Clone Repository
 
-1. Open a new terminal.
+```bash
+git clone https://github.com/<your-username>/ai-first-crm.git
 
-2. Navigate to the frontend folder.
+cd ai-first-crm
+```
 
-Command: cd frontend
+---
 
-3. Install dependencies.
+## Backend Setup
 
-Command: npm install
+```bash
+cd backend
 
-4. Start the Vite development server.
+python -m venv venv
 
-Command: npm run dev
+source venv/bin/activate
+```
 
-Open the local Vite frontend address displayed in the terminal.
+Windows
 
-## Example AI Commands
+```bash
+venv\Scripts\activate
+```
 
-Log an interaction with Dr. Test Kumar. Meeting. Discussed oncology treatment options. Positive sentiment. Requested clinical materials.
+Install dependencies
 
-Find interactions for Dr. Test Kumar.
+```bash
+pip install -r requirements.txt
+```
 
-Edit interaction 5. Change sentiment to neutral and change the outcome to follow-up meeting required.
+Run backend
 
-Suggest follow-up actions for Dr. Test Kumar.
+```bash
+uvicorn app.main:app --reload
+```
 
-Summarize the interaction with Dr. Test Kumar.
+---
 
-## Security
+## Frontend Setup
 
-Sensitive values such as the PostgreSQL database URL and Groq API key are stored in a .env file.
+```bash
+cd frontend
 
-The .env file is excluded from Git version control. API keys and database credentials must not be committed.
+npm install
 
-## Author
+npm run dev
+```
 
-Priyadharshini R
+---
+
+# ⚙ Environment Variables
+
+Backend
+
+```env
+DATABASE_URL=
+
+GROQ_API_KEY=
+```
+
+Frontend
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+---
+
+# 📡 API Documentation
+
+Once the backend is running:
+
+```
+http://localhost:8000/docs
+```
+
+Swagger UI provides interactive documentation for all available endpoints.
+
+---
+
+# 🎯 Future Improvements
+
+- User Authentication & Authorization
+- Role-Based Access Control
+- Email Notifications
+- Calendar Integration
+- Analytics Dashboard
+- Semantic Search using Vector Database
+- Multi-user Support
+- Docker Deployment
+- CI/CD Pipeline
+
+---
+
+# 👩‍💻 Author
+
+**Priyadharshini Rajendran**
+
+- GitHub: https://github.com/priyadharshinirajendran-17
+- LinkedIn: *(Add your LinkedIn URL)*
+- Portfolio: https://mern-portfolio-wheat-omega.vercel.app
+
+---
+
+# 📄 License
+
+This project is developed for educational and portfolio purposes.
